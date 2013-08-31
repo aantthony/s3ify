@@ -8,19 +8,10 @@ This code however, doesn't do the signing or even request the signed url. That s
 # Usage
 
 ```js
+// Create a new upload. This will set upload.xhr
 var upload = new S3ify(signedUrl);
-var data = new Blob(..., {type: 'image/png'});
-upload.send(data, function (err) {
-  console.log('Uploaded!');
-});
-```
 
-# Future planned usage (not yet implemented)
-
-```js
-var upload = new S3ify(signedUrl);
-upload.on('progress', function () {});
 upload.send(dataUrl, function (err) {
-  console.log('Uploaded');
+  console.log('Uploaded!');
 });
 ```
