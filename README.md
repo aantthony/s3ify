@@ -7,7 +7,7 @@ This code however, doesn't do the signing or even request the signed url. That s
 
 # Usage
 
-```
+```js
 var upload = new S3ify(signedUrl);
 var data = new Blob(..., {type: 'image/png'});
 upload.send(data, function (err) {
@@ -17,7 +17,7 @@ upload.send(data, function (err) {
 
 # Future planned usage (not yet implemented)
 
-```
+```js
 var upload = new S3ify(signedUrl);
 upload.on('progress', function () {});
 upload.send(dataUrl, function (err) {
