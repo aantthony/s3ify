@@ -26,7 +26,7 @@ function S3ify(url) {
 
   xhr.onload = function() {
 
-    if (this.status !== 200) {
+    if (this.status === 200) {
       self.callback(null);
     } else {
       self.callback(this.status);
