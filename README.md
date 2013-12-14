@@ -28,7 +28,7 @@ var s3conf = {
   access: 'public-read'
 };
 
-var s3 = knox.createClient(s3conf);
+var s3 = require('knox').createClient(s3conf);
 
 var exports = module.exports = require('express')();
 
@@ -41,7 +41,7 @@ exports.post('/upload', function (req, res) {
   };
   var signedUrl = s3.signedUrl(filename, expires, options);
   res.json({
-    signedUrl: signedUrl // (string, pass this variable to new S3ify()),
+    signedUrl: signedUrl, // (string, pass this variable to new S3ify())
     willbeuploadedto: '//' + s3conf.bucket + '.s3.amazonaws.com' + '/' + filename
   });
 });
