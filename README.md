@@ -15,3 +15,6 @@ upload.send(dataUrl, function (err) {
   console.log('Uploaded!');
 });
 ```
+
+
+[![Build Status](https://travis-ci.org/aantthony/s3ify.png?branch=master)](https://travis-ci.org/aantthony/s3ify)
