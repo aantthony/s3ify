@@ -14,9 +14,13 @@ function definition() {
 
 // end crap
 
+var compatatob;
+
 // base64 parsing, with Buffer used as a fallback
-if (typeof atob === 'undefined') {
-  var atob = function (b64string) {
+if (typeof window !== 'undefined' && window.atob) {
+  compatatob = atob;
+} else {
+  compatatob = function (b64string) {
     return new Buffer(b64string, 'base64').toString('binary');
   };
 }
@@ -31,7 +35,7 @@ function blobify(dataUrl) {
   var bytes;
 
   if (meta[1] === 'base64') {
-    var raw = atob(parts[1]);
+    var raw = compatatob(parts[1]);
     var l = raw.length;
   
     bytes = new Uint8Array(l);

@@ -1,12 +1,8 @@
-var should = require('should');
-var connect = require('connect');
-
-
 describe('Upload', function () {
   var server;
 
   // var dataUrl2 = require('fs').readFileSync(__dirname + '/image.dataURL').toString();
-  var file = require('fs').readFileSync(__dirname + '/image.png');
+  var file = require('fs').readFileSync(__dirname + '/../image.png');
   var dataUrl = 'data:image/png;base64,' + file.toString('base64');
 
   // before(function (done) {
@@ -29,7 +25,9 @@ describe('Upload', function () {
   it('should upload a png file', function (done) {
 
     global.Blob = function (datum, meta) {
-      meta.type.should.equal('image/png');
+      if (meta.type !== 'image/png') {
+        throw new Error(meta.type);
+      }
       return datum[0];
     };
 
@@ -38,8 +36,8 @@ describe('Upload', function () {
       open: function () {},
       setRequestHeader: function () {},
       send: function (data) {
-        should.not.exist(this.data);
-        should.exist(data);
+        if (this.data) throw new Error('xhr.send() called more than once!');
+        if (!data) throw new Error('Data missing');
         this.data = data;
       }
     };
@@ -48,7 +46,7 @@ describe('Upload', function () {
       return xhr;
     };
 
-    var S3ify = require('./..');
+    var S3ify = require('../..');
 
     var upload = new S3ify('http://localhost:40403/filename?params=x');
 
@@ -58,13 +56,16 @@ describe('Upload', function () {
 
     var bytes = xhr.data;
     var correct = new Uint8Array(file);
-    bytes.byteLength.should.equal(correct.byteLength);
+    if (bytes.byteLength !== correct.byteLength) {
+      throw new Error('Wrong file size');
+    }
 
     for(var i = 0; i < correct.length; i++) {
       if (bytes[i] !== correct[i]) {
         throw new Error('Mismatch at position ' + i);
       }
     }
+
 
     xhr.onload();
   });
