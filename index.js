@@ -59,7 +59,7 @@ function S3ify(url) {
 
   xhr.onload = function() {
 
-    if (this.status >= 400) {
+    if (this.status < 400) {
       self.callback(null);
     } else {
       var err = new Error(this.status);
