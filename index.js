@@ -18,7 +18,7 @@ function definition() {
 if (typeof atob === 'undefined') {
   var atob = function (b64string) {
     return new Buffer(b64string, 'base64').toString('binary');
-  }
+  };
 }
 
 // Convert a dataurl into a blob which can be passed to the xhr.send() function.
@@ -35,7 +35,6 @@ function blobify(dataUrl) {
     var l = raw.length;
   
     bytes = new Uint8Array(l);
-  
     for(var i = 0; i < l; i++) {
       bytes[i] = raw.charCodeAt(i);
     }
@@ -60,10 +59,12 @@ function S3ify(url) {
 
   xhr.onload = function() {
 
-    if (this.status === 200) {
+    if (this.status >= 400) {
       self.callback(null);
     } else {
-      self.callback(this.status);
+      var err = new Error(this.status);
+      err.status = this.status;
+      self.callback(err);
     }
   };
 
